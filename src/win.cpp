@@ -2,6 +2,8 @@
 
 using std::string;
 
+bool Win::colors;
+
 /////////////////////////////////////////////////
 // constructor, set position and size variables
 // and create the WINDOW* and border
@@ -26,6 +28,13 @@ Win::~Win()
 {
     delwin(border);
     delwin(win); 
+}
+
+////////////////////////////////////////
+// set if colors should be used or not
+void Win::setColors(bool colors)
+{
+    Win::colors = colors;
 }
 
 ////////////////////
@@ -57,4 +66,36 @@ void Win::print(string text)
 void Win::print(string text, unsigned x, unsigned y)
 {
     mvwprintw(win, y, x, text.c_str());
+}
+
+void Win::inverse(bool border)
+{
+    if (border)
+        wattron(this->border, A_STANDOUT);
+    else
+        wattron(this->win, A_STANDOUT);
+}
+
+void Win::inverseOff(bool border)
+{
+    if (border)
+        wattroff(this->border, A_STANDOUT);
+    else
+        wattroff(this->win, A_STANDOUT);   
+}
+
+void Win::color(int pair, bool border)
+{
+    if (border)
+        wattron(this->border, COLOR_PAIR(pair));
+    else
+        wattron(this->win, COLOR_PAIR(pair));
+}
+
+void Win::colorOff(int pair, bool border)
+{
+    if (border)
+        wattroff(this->border, COLOR_PAIR(pair));
+    else
+        wattroff(this->win, COLOR_PAIR(pair));
 }
