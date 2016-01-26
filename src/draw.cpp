@@ -191,6 +191,8 @@ void drawTitle(TodoList* list)
 // draw the control panel
 void drawControls()
 {
+    controlWin->color(BORDER_COLOR_PAIR, true);
+    controlWin->box();
     controlWin->draw(true);
 
     controlWin->clear();
@@ -224,7 +226,6 @@ void drawControls()
     controlWin->print(line.str());
     line.str("");
 
-    controlWin->color(BORDER_COLOR_PAIR, true);
     controlWin->draw();
 }
 
@@ -232,8 +233,10 @@ void drawTasks(TodoList* list, unsigned selected)
 {
     auto tasks = list->tasks();
     
+    taskWin->color(BORDER_COLOR_PAIR, true);
+    taskWin->box();
+    taskWin->draw(true);
     taskWin->clear();    
-    taskWin->clear(true);    
 
     if (tasks && tasks->size() != 0){
         xpos = 1;
@@ -325,8 +328,6 @@ void drawTasks(TodoList* list, unsigned selected)
         }
     }
     
-    taskWin->color(BORDER_COLOR_PAIR, true);
-    taskWin->draw(true);
     taskWin->draw();
 }
 

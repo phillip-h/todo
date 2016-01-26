@@ -40,6 +40,13 @@ void Win::setColors(bool colors)
     Win::colors = colors;
 }
 
+///////////////////
+// box the window
+void Win::box()
+{
+    ::box(border, 0, 0);
+}
+
 ////////////////////
 // clear the window
 void Win::clear(bool border_)
@@ -55,7 +62,6 @@ void Win::clear(bool border_)
 void Win::draw(bool border_)
 {
     if (border_){
-        box(border, 0, 0);
         inverse(true);
         mvwprintw(border, 0, 0, string("[" + name + "]").c_str());
         inverseOff(true);

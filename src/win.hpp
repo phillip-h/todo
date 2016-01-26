@@ -26,6 +26,7 @@ public:
 
     static void setColors(bool colors);
 
+    void box();
     void clear(bool border = false);
     void draw(bool border = false);
 
