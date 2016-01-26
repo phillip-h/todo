@@ -31,21 +31,18 @@ void inverseOn();
 void inverseOff();
 void colorOn(int pair);
 void colorOff(int pair);
-void colorMarkOn(string mark);
-void colorMarkOff(string mark);
 
 // ===================|
 // internal variables |
 // ===================|
-WINDOW *taskWindow;
 WINDOW *inputWindow;
 WINDOW *controlWindow;
-WINDOW *taskWindowBorder;
 WINDOW *inputWindowBorder;
 WINDOW *controlWindowBorder;
 WINDOW *currentWindow;
 
 Win *titleWin;
+Win *taskWin;
 
 int startX;
 int startY;
@@ -95,9 +92,6 @@ void Draw::init()
     startY = listStartY;
     width = COLS - startX - 2;
     height = LINES * listHeight;
-    taskWindowBorder = createWindow(startX, startY, width, height);
-    taskWindow = createWindow(startX + 1, startY + 1, 
-                              width - 2, height - 2);
 
     int inHeight = inputHeight * LINES;
     inHeight = std::max(inHeight, 4);
@@ -111,9 +105,9 @@ void Draw::init()
     controlWindow = createWindow(inputStartX + 1, inputStartY + 1,
                                  COLS - inputStartX - 4, inHeight - 2);
 
-    setCurrentWindow(taskWindow);
 
     titleWin = new Win(0, 0, COLS, titleHeight, "title", false);
+    taskWin = new Win(startX, startY, width, height, "tasks");
 }
 
 //////////////////////
@@ -135,7 +129,7 @@ void Draw::mouse(MEVENT event, TodoList *list,
 {
     int x = event.x;
     int y = event.y;
-    if (wmouse_trafo(taskWindow, &y, &x, false)){
+    if (taskWin->mouse(x, y)){
         unsigned pos = listOff + y - 1;
         if (pos < list->size()){
             if (!button){
@@ -178,7 +172,6 @@ string Draw::getInput()
     char tmp[charBufferSize];
     mvwgetnstr(inputWindow, 0, 0, tmp, charBufferSize);
 
-    setCurrentWindow(taskWindow);
     box(inputWindowBorder, ' ', ' ');
     werase(inputWindow);
     werase(inputWindowBorder);
@@ -261,6 +254,105 @@ void drawControls()
 }
 
 void drawTasks(TodoList* list, unsigned selected)
+{
+    auto tasks = list->tasks();
+    
+    taskWin->clear();    
+    taskWin->color(BORDER_COLOR_PAIR, true);
+
+    if (tasks && tasks->size() != 0){
+        xpos = 1;
+        ypos = 1;
+
+        unsigned numTasks = height - 2;
+        endTask = tasks->size();
+        if (endTask > numTasks){
+            endTask = numTasks;
+        }
+        
+        if (numTasks <= tasks->size()){
+            while (selected > endTask + listOff - 2 && selected != 0){
+                listOff++;
+            }
+            while (selected < startTask + listOff && 
+                   selected != list->size() - 1){
+                listOff--;
+            }
+        } else{
+            listOff = 0;
+        }
+
+        for (unsigned i = startTask + listOff; i < endTask + listOff; i++){
+            Task t = tasks->at(i);
+            
+            if (showNumbers){
+                taskWin->inverse();
+                taskWin->color(GUTTER_COLOR_PAIR);
+                
+                std::string number = std::to_string(i);
+                if (!zeroIndexNumbers)
+                    number = std::to_string(i + 1);
+                if (number.size() < 2)
+                    number = "0"+number;
+                
+                taskWin->print(number + ")", xpos, ypos);
+                taskWin->colorOff(GUTTER_COLOR_PAIR);
+                taskWin->inverseOff();
+                xpos += 5;
+            }
+            
+            if (i == selected){
+                std::string tmp = tasks->at(i).task();
+                std::string line = tmp;
+                if (highlightWholeLine){
+                    for (int k = tmp.size() + xpos; k < width - 2; k++){
+                        line += " ";
+                    }
+                }
+                
+                std::string mark = line.substr(0, STRING_COMPLETE.size());
+                line = line.substr(mark.size());
+                
+                taskWin->inverse();
+
+                taskWin->color(!t.completed() ? MARK_COLOR_PAIR
+                                              : MARK_COLOR_PAIR_DONE); 
+                taskWin->print(mark, xpos, ypos);
+                taskWin->colorOff(!t.completed() ? MARK_COLOR_PAIR
+                                                 : MARK_COLOR_PAIR_DONE);
+
+                taskWin->color(SELECT_COLOR_PAIR);
+                taskWin->print(line, xpos + mark.size(), ypos);
+                taskWin->colorOff(SELECT_COLOR_PAIR);
+                
+                taskWin->inverseOff();
+            } else{
+                std::string tmp = tasks->at(i).task();
+                std::string text = tmp;
+                std::string mark = text.substr(0, STRING_COMPLETE.size());
+                text = text.substr(mark.size());
+
+                taskWin->color(!t.completed() ? MARK_COLOR_PAIR
+                                              : MARK_COLOR_PAIR_DONE); 
+                taskWin->print(mark, xpos, ypos);
+                taskWin->colorOff(!t.completed() ? MARK_COLOR_PAIR
+                                                 : MARK_COLOR_PAIR_DONE);
+
+                taskWin->print(text, xpos + mark.size(), ypos);
+            }
+            ypos++;
+            if (ypos > numTasks || i >= tasks->size() - 1){
+                break;
+            }
+            if (showNumbers){
+                xpos -= 5;
+            }
+        }
+    }
+    taskWin->draw();
+}
+
+/*void drawTasks(TodoList* list, unsigned selected)
 {
     auto tasks = list->tasks();
 
@@ -369,7 +461,7 @@ void drawTasks(TodoList* list, unsigned selected)
     }
     wrefresh(taskWindowBorder);
     wrefresh(taskWindow);
-}
+}*/
 
 // draw text to the current window
 void drawText(std::string text, int x, int y)
@@ -419,13 +511,12 @@ void colorOff(int pair)
 // stop curses and delete windows
 void Draw::stop()
 {
-    delwin(taskWindow);
     delwin(inputWindow);
-    delwin(taskWindowBorder);
     delwin(inputWindowBorder);
     
     delete titleWin;
-    
+    delete taskWin;
+
     endwin();
 
     curs_set(1);
@@ -465,26 +556,4 @@ std::string buildTitle(TodoList *list)
 
     title += stats;
     return title;
-}
-
-void colorMarkOn(std::string mark)
-{
-    if (colors){
-        if (mark == STRING_COMPLETE){
-            colorOn(MARK_COLOR_PAIR_DONE);
-        } else{
-            colorOn(MARK_COLOR_PAIR);
-        }
-    }
-}
-
-void colorMarkOff(std::string mark)
-{
-    if (colors){
-        if (mark == STRING_COMPLETE){
-            colorOff(MARK_COLOR_PAIR_DONE);
-        } else{
-            colorOff(MARK_COLOR_PAIR);
-        }
-    }
 }
