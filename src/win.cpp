@@ -4,28 +4,35 @@ using std::string;
 
 /////////////////////////////////////////////////
 // constructor, set position and size variables
-// and create the WINDOW*
-Win::Win(unsigned x, unsigned y, unsigned width, unsigned height)
+// and create the WINDOW* and border
+Win::Win(unsigned x, unsigned y, unsigned w, unsigned h, bool border)
 {
     this->x = x;
     this->y = y;
     this->width = width;
     this->height = height;
 
-    win = newwin(height, width, y, x);
+    this->border = newwin(h, w, y, x); 
+    
+    if (border)
+        win = newwin(h - 1, w - 1, y - 1, x - 1);
+    else
+        win = newwin(h, w, y, x);
 }
 
 //////////////////////////////////
 // destructor, destroy the window
 Win::~Win()
 {
-   delwin(win); 
+    delwin(border);
+    delwin(win); 
 }
 
 ////////////////////
 // clear the window
 void Win::clear()
 {
+    wclear(border);
     wclear(win);
 }
 
@@ -33,6 +40,8 @@ void Win::clear()
 // draw the current window buffer
 void Win::draw()
 {
+    box(border, 0, 0);
+    wrefresh(border);
     wrefresh(win);    
 }
 
