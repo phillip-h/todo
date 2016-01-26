@@ -54,7 +54,7 @@ void Win::print(string text)
 
 //////////////////////////////////////
 // print text to the window at (x, y)
-void Win::print(unsigned x, unsigned y, string text)
+void Win::print(string text, unsigned x, unsigned y)
 {
     mvwprintw(win, y, x, text.c_str());
 }

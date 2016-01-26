@@ -22,7 +22,7 @@ public:
     void draw();
 
     void print(std::string text);
-    void print(unsigned x, unsigned y, std::string text);
+    void print(std::string text, unsigned x, unsigned y);
 };
 
 #endif
