@@ -42,23 +42,36 @@ void Win::setColors(bool colors)
 
 ////////////////////
 // clear the window
-void Win::clear()
+void Win::clear(bool border_)
 {
-    wclear(border);
-    wclear(win);
+    if (border_)
+        wclear(border);
+    else
+        wclear(win);
 }
 
 ///////////////////////////////////
 // draw the current window buffer
-void Win::draw()
+void Win::draw(bool border_)
 {
-    box(border, 0, 0);
-    inverse(true);
-    mvwprintw(border, 0, 0, string("[" + name + "]").c_str());
-    inverseOff(true);
+    if (border_){
+        box(border, 0, 0);
+        inverse(true);
+        mvwprintw(border, 0, 0, string("[" + name + "]").c_str());
+        inverseOff(true);
 
-    wrefresh(border);
+        wrefresh(border);
+        return;
+    }
+    
     wrefresh(win);    
+}
+
+/////////////////////////////////////////
+// move window print position to (x, y)
+void Win::move(unsigned x, unsigned y)
+{
+    wmove(win, y, x);
 }
 
 /////////////////////////////

@@ -26,8 +26,10 @@ public:
 
     static void setColors(bool colors);
 
-    void clear();
-    void draw();
+    void clear(bool border = false);
+    void draw(bool border = false);
+
+    void move(unsigned x, unsigned y);
 
     void print(std::string text);
     void print(std::string text, unsigned x, unsigned y);
