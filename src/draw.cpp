@@ -113,7 +113,7 @@ void Draw::init()
 
     setCurrentWindow(taskWindow);
 
-    titleWin = new Win(0, 0, COLS, titleHeight, false);
+    titleWin = new Win(0, 0, COLS, titleHeight, "title", false);
 }
 
 //////////////////////

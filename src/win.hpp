@@ -11,13 +11,17 @@ private:
     
     WINDOW *win;
     WINDOW *border;
+    
     unsigned x;
     unsigned y;
     unsigned width;
     unsigned height;
+    
+    std::string name;
 
 public:
-    Win(unsigned x, unsigned y, unsigned w, unsigned h, bool border = 1);
+    Win(unsigned x, unsigned y, unsigned w, unsigned h, 
+        std::string name, bool border = 1);
     ~Win(); 
 
     static void setColors(bool colors);

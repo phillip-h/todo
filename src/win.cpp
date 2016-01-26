@@ -7,12 +7,15 @@ bool Win::colors;
 /////////////////////////////////////////////////
 // constructor, set position and size variables
 // and create the WINDOW* and border
-Win::Win(unsigned x, unsigned y, unsigned w, unsigned h, bool border)
+Win::Win(unsigned x, unsigned y, unsigned w, unsigned h, 
+         string name, bool border)
 {
     this->x = x;
     this->y = y;
     this->width = width;
     this->height = height;
+
+    this->name = name;
 
     this->border = newwin(h, w, y, x); 
     
@@ -50,6 +53,7 @@ void Win::clear()
 void Win::draw()
 {
     box(border, 0, 0);
+    mvwprintw(border, 0, 0, string("[" + name + "]").c_str());
     wrefresh(border);
     wrefresh(win);    
 }
