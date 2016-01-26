@@ -235,8 +235,8 @@ void drawTasks(TodoList* list, unsigned selected)
     
     taskWin->color(BORDER_COLOR_PAIR, true);
     taskWin->box();
-    taskWin->draw(true);
     taskWin->clear();    
+    taskWin->draw(true);
 
     if (tasks && tasks->size() != 0){
         xpos = 1;

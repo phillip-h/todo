@@ -45,6 +45,9 @@ void Win::setColors(bool colors)
 void Win::box()
 {
     ::box(border, 0, 0);
+    inverse(true);
+    mvwprintw(border, 0, 0, string("[" + name + "]").c_str());
+    inverseOff(true);
 }
 
 ////////////////////
@@ -61,16 +64,10 @@ void Win::clear(bool border_)
 // draw the current window buffer
 void Win::draw(bool border_)
 {
-    if (border_){
-        inverse(true);
-        mvwprintw(border, 0, 0, string("[" + name + "]").c_str());
-        inverseOff(true);
-
+    if (border_)
         wrefresh(border);
-        return;
-    }
-    
-    wrefresh(win);    
+    else
+        wrefresh(win);    
 }
 
 /////////////////////////////////////////
