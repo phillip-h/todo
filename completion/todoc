@@ -1,0 +1,18 @@
+_todo(){
+local cur prev opts
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    
+    opts="--help --version --rename --delete --list --print --no-color"
+
+    if [[ ${cur} == -* ]] ; then
+        COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+        return 0
+    fi
+
+    local lists=$(for x in `ls -1 ~/.todo/*.todo`; do x=${x%.*}; echo ${x##*/} ; done )
+
+    COMPREPLY=( $(compgen -W "${lists}" -- ${cur}) )
+}
+complete -F _todo todo
