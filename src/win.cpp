@@ -20,7 +20,7 @@ Win::Win(unsigned x, unsigned y, unsigned w, unsigned h,
     this->border = newwin(h, w, y, x); 
     
     if (border)
-        win = newwin(h - 1, w - 1, y + 1, x + 1);
+        win = newwin(h - 2, w - 2, y + 1, x + 1);
     else
         win = newwin(h, w, y, x);
 }
