@@ -53,7 +53,10 @@ void Win::clear()
 void Win::draw()
 {
     box(border, 0, 0);
+    inverse(true);
     mvwprintw(border, 0, 0, string("[" + name + "]").c_str());
+    inverseOff(true);
+
     wrefresh(border);
     wrefresh(win);    
 }
