@@ -55,9 +55,9 @@ void Win::box()
 void Win::clear(bool border_)
 {
     if (border_)
-        wclear(border);
+        werase(border);
     else
-        wclear(win);
+        werase(win);
 }
 
 ///////////////////////////////////
