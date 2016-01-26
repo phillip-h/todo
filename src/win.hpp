@@ -36,6 +36,8 @@ public:
     void inverseOff(bool border = 0);
     void color(int pair, bool border = 0);
     void colorOff(int pair, bool border = 0);
+
+    bool mouse(int &x, int &y);
 };
 
 #endif

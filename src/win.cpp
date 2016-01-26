@@ -75,6 +75,8 @@ void Win::print(string text, unsigned x, unsigned y)
     mvwprintw(win, y, x, text.c_str());
 }
 
+//////////////////////////
+// turn on inverse mode
 void Win::inverse(bool border)
 {
     if (border)
@@ -83,6 +85,8 @@ void Win::inverse(bool border)
         wattron(this->win, A_STANDOUT);
 }
 
+//////////////////////////
+// turn off inverse mode
 void Win::inverseOff(bool border)
 {
     if (border)
@@ -91,6 +95,8 @@ void Win::inverseOff(bool border)
         wattroff(this->win, A_STANDOUT);   
 }
 
+///////////////////////
+// turn on color pair
 void Win::color(int pair, bool border)
 {
     if (border)
@@ -99,10 +105,20 @@ void Win::color(int pair, bool border)
         wattron(this->win, COLOR_PAIR(pair));
 }
 
+////////////////////////
+// turn off color pair
 void Win::colorOff(int pair, bool border)
 {
     if (border)
         wattroff(this->border, COLOR_PAIR(pair));
     else
         wattroff(this->win, COLOR_PAIR(pair));
+}
+
+////////////////////////////////////////////
+// transform mouse click x, y to window
+// coordinates
+bool Win::mouse(int &x, int &y)
+{
+   return wmouse_trafo(win, &y, &x, false); 
 }
