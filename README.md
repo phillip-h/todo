@@ -1,4 +1,4 @@
-# todo
+# todo [![Build Status](https://travis-ci.org/phillip-h/todo.svg?branch=master)](https://travis-ci.org/phillip-h/todo)
 A program for CLI todo lists, written using `ncurses`!
 
 ![todo running in gnome-terminal](images/todo.png)
