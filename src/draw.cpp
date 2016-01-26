@@ -36,13 +36,12 @@ void colorOff(int pair);
 // internal variables |
 // ===================|
 WINDOW *inputWindow;
-WINDOW *controlWindow;
 WINDOW *inputWindowBorder;
-WINDOW *controlWindowBorder;
 WINDOW *currentWindow;
 
 Win *titleWin;
 Win *taskWin;
+Win *controlWin;
 
 int startX;
 int startY;
@@ -100,14 +99,11 @@ void Draw::init()
     inputWindow = createWindow(inputStartX + 1, inputStartY + 1, 
                                COLS - inputStartX - 4, inHeight - 2);
 
-    controlWindowBorder = createWindow(inputStartX, inputStartY, 
-                                       COLS - inputStartX - 2, inHeight);
-    controlWindow = createWindow(inputStartX + 1, inputStartY + 1,
-                                 COLS - inputStartX - 4, inHeight - 2);
-
 
     titleWin = new Win(0, 0, COLS, titleHeight, "title", false);
     taskWin = new Win(startX, startY, width, height, "tasks");
+    controlWin = new Win(inputStartX, inputStartY, COLS - inputStartX - 2, 
+                         inHeight, "controls");
 }
 
 //////////////////////
@@ -146,9 +142,6 @@ void Draw::mouse(MEVENT event, TodoList *list,
 string Draw::getInput()
 {
     echo();
-
-    werase(controlWindow);
-    werase(controlWindowBorder);
 
     setCurrentWindow(inputWindowBorder);
     if (colors){
@@ -198,59 +191,41 @@ void drawTitle(TodoList* list)
 // draw the control panel
 void drawControls()
 {
-    setCurrentWindow(controlWindow);
-    wmove(controlWindow, 0, 0);
+    controlWin->draw(true);
+
+    controlWin->clear();
+    controlWin->move(0, 0);
 
     stringstream line;
     
-    line << "[" << ((char) EXIT_KEY) << "]";
-    wprintw(controlWindow, line.str().c_str());
-    wprintw(controlWindow, " quit          ");
+    line << "[" << ((char) EXIT_KEY) << "] quit          ";
+    controlWin->print(line.str());
     line.str("");
 
-    line << "[Space]";
-    wprintw(controlWindow, line.str().c_str());
-    wprintw(controlWindow, " new task          ");
+    line << "[Space] new task          ";
+    controlWin->print(line.str());
     line.str("");
 
-    line << "[" << ((char) MOVE_UP_KEY) << "]";
-    wprintw(controlWindow, line.str().c_str());
-    wprintw(controlWindow, " move task up  ");
+    line << "[" << ((char) MOVE_UP_KEY) << "] move task up  ";
+    controlWin->print(line.str());
     line.str("");
 
-    wmove(controlWindow, 1, 0);
+    controlWin->move(0, 1);
 
-    line << "[" << ((char) REMOVE_KEY) << "]";
-    wprintw(controlWindow, line.str().c_str());
-    wprintw(controlWindow, " delete task   ");
+    line << "[" << ((char) REMOVE_KEY) << "] delete task   ";
+    controlWin->print(line.str());
     line.str("");
 
-    line << "[Return]";
-    wprintw(controlWindow, line.str().c_str());
-    wprintw(controlWindow, " mark task done   ");
+    line << "[Return] mark task done   ";
+    controlWin->print(line.str());
     line.str("");
 
-    line << "[" << ((char) MOVE_DOWN_KEY) << "]";
-    wprintw(controlWindow, line.str().c_str());
-    wprintw(controlWindow, " move task down  ");
+    line << "[" << ((char) MOVE_DOWN_KEY) << "] move task down  ";
+    controlWin->print(line.str());
     line.str("");
 
-    setCurrentWindow(controlWindowBorder);
-    if (colors){
-        colorOn(BORDER_COLOR_PAIR);
-    }
-    box(controlWindowBorder, 0, 0);
-    
-    inverseOn();
-    drawText("[Controls]", 0, 0);
-    inverseOff();
-
-    if (colors){
-        colorOff(BORDER_COLOR_PAIR);
-    }
-
-    wrefresh(controlWindowBorder);
-    wrefresh(controlWindow);
+    controlWin->color(BORDER_COLOR_PAIR, true);
+    controlWin->draw();
 }
 
 void drawTasks(TodoList* list, unsigned selected)
@@ -258,7 +233,7 @@ void drawTasks(TodoList* list, unsigned selected)
     auto tasks = list->tasks();
     
     taskWin->clear();    
-    taskWin->color(BORDER_COLOR_PAIR, true);
+    taskWin->clear(true);    
 
     if (tasks && tasks->size() != 0){
         xpos = 1;
@@ -349,119 +324,11 @@ void drawTasks(TodoList* list, unsigned selected)
             }
         }
     }
+    
+    taskWin->color(BORDER_COLOR_PAIR, true);
+    taskWin->draw(true);
     taskWin->draw();
 }
-
-/*void drawTasks(TodoList* list, unsigned selected)
-{
-    auto tasks = list->tasks();
-
-    setCurrentWindow(taskWindowBorder);
-    if (colors){
-        colorOn(BORDER_COLOR_PAIR);
-    }
-    box(taskWindowBorder, 0, 0);
-    
-    inverseOn();
-    drawText("[Tasks]", 0, 0);
-    inverseOff();
-
-    if (colors){
-        colorOff(BORDER_COLOR_PAIR);
-    }
-    
-    setCurrentWindow(taskWindow);
-    werase(taskWindow);
-
-    if (tasks && tasks->size() != 0){
-        xpos = 1;
-        ypos = 1;
-
-        unsigned numTasks = height - 2;
-        endTask = tasks->size();
-        if (endTask > numTasks){
-            endTask = numTasks;
-        }
-        
-        if (numTasks <= tasks->size()){
-            while (selected > endTask + listOff - 2 && selected != 0){
-                listOff++;
-            }
-            while (selected < startTask + listOff && selected != list->size() - 1){
-                listOff--;
-            }
-        } else{
-            listOff = 0;
-        }
-
-        for (unsigned i = startTask + listOff; i < endTask + listOff; i++){
-            if (showNumbers){
-                inverseOn();
-                if (colors){
-                    colorOn(GUTTER_COLOR_PAIR);
-                }
-                std::string number = std::to_string(i);
-                if (!zeroIndexNumbers){
-                    number = std::to_string(i + 1);
-                }
-                if (number.size() < 2){
-                    number = "0"+number;
-                }
-                drawText(number + ")", xpos, ypos);
-                if (colors){
-                    colorOff(GUTTER_COLOR_PAIR);
-                }
-                inverseOff();
-                xpos += 5;
-            }
-            if (i == selected){
-                inverseOn();
-                std::string tmp = tasks->at(i).task();
-                std::string line = tmp;
-                if (highlightWholeLine){
-                    for (int k = tmp.size() + xpos; k < width - 2; k++){
-                        line += " ";
-                    }
-                }
-                std::string mark = line.substr(0, STRING_COMPLETE.size());
-                line = line.substr(mark.size());
-
-                colorMarkOn(mark);
-                drawText(mark, xpos, ypos);
-                colorMarkOff(mark);
-
-                if (colors){
-                    colorOn(SELECT_COLOR_PAIR);
-                }
-                drawText(line, xpos + mark.size(), ypos);
-                if (colors){
-                    colorOff(SELECT_COLOR_PAIR);
-                }
-                inverseOff();
-            } else{
-                std::string tmp = tasks->at(i).task();
-                std::string text = tmp;
-                std::string mark = text.substr(0, STRING_COMPLETE.size());
-                text = text.substr(mark.size());
-
-                colorMarkOn(mark);
-                drawText(mark, xpos, ypos);
-                colorMarkOff(mark);
-
-                drawText(text, xpos + mark.size(), ypos);
-            }
-            ypos++;
-            if (ypos > numTasks || i >= tasks->size() - 1){
-                break;
-            }
-            if (showNumbers){
-                xpos -= 5;
-            }
-        }
-    }
-    wrefresh(taskWindowBorder);
-    wrefresh(taskWindow);
-}*/
 
 // draw text to the current window
 void drawText(std::string text, int x, int y)
@@ -516,6 +383,7 @@ void Draw::stop()
     
     delete titleWin;
     delete taskWin;
+    delete controlWin;
 
     endwin();
 
