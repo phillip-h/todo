@@ -40,7 +40,6 @@ void colorMarkOff(string mark);
 WINDOW *taskWindow;
 WINDOW *inputWindow;
 WINDOW *controlWindow;
-WINDOW *titleWindow;
 WINDOW *taskWindowBorder;
 WINDOW *inputWindowBorder;
 WINDOW *controlWindowBorder;
@@ -111,8 +110,6 @@ void Draw::init()
                                        COLS - inputStartX - 2, inHeight);
     controlWindow = createWindow(inputStartX + 1, inputStartY + 1,
                                  COLS - inputStartX - 4, inHeight - 2);
-
-    titleWindow = createWindow(0, 0, COLS, titleHeight);
 
     setCurrentWindow(taskWindow);
 
@@ -191,6 +188,8 @@ string Draw::getInput()
     return std::string(tmp);
 }
 
+////////////////////
+//  draw the title
 void drawTitle(TodoList* list)
 {
     titleWin->clear();
@@ -422,7 +421,6 @@ void Draw::stop()
 {
     delwin(taskWindow);
     delwin(inputWindow);
-    delwin(titleWindow);
     delwin(taskWindowBorder);
     delwin(inputWindowBorder);
     
