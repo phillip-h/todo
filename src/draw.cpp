@@ -8,6 +8,7 @@
 #include "config.hpp"
 #include "task.hpp"
 #include "todolist.hpp"
+#include "win.hpp"
 
 using std::string;
 using std::stringstream;
@@ -43,8 +44,9 @@ WINDOW *titleWindow;
 WINDOW *taskWindowBorder;
 WINDOW *inputWindowBorder;
 WINDOW *controlWindowBorder;
-
 WINDOW *currentWindow;
+
+Win *titleWin;
 
 int startX;
 int startY;
@@ -79,6 +81,7 @@ void Draw::init()
                   MARK_BACKGROUND_DONE);
         colors = true;
     }
+    Win::setColors(colors);
     
     mouseinterval(0);    
     keypad(stdscr, true);
@@ -112,6 +115,8 @@ void Draw::init()
     titleWindow = createWindow(0, 0, COLS, titleHeight);
 
     setCurrentWindow(taskWindow);
+
+    titleWin = new Win(0, 0, COLS, titleHeight, false);
 }
 
 //////////////////////
@@ -188,32 +193,14 @@ string Draw::getInput()
 
 void drawTitle(TodoList* list)
 {
-    setCurrentWindow(titleWindow);
-    werase(titleWindow);
-    inverseOn();
-
-    if (colors){
-        colorOn(BORDER_COLOR_PAIR);
-    }
-    setCurrentWindow(titleWindow);
-    box(titleWindow, 0, 0);
-    if (colors){
-        colorOff(BORDER_COLOR_PAIR);
-    }
-
-    if (colors){
-        colorOn(TITLE_COLOR_PAIR);
-    }
-    drawText(buildTitle(list), 0, 0);
-    inverseOff();
-
-    if (colors){
-        colorOff(TITLE_COLOR_PAIR);
-    }
-
-    inverseOn();
-    wrefresh(titleWindow);
-    inverseOff();
+    titleWin->clear();
+    titleWin->inverse();
+    titleWin->color(TITLE_COLOR_PAIR);
+    titleWin->print(buildTitle(list), 0, 0);
+    titleWin->colorOff(TITLE_COLOR_PAIR);
+    titleWin->inverseOff();
+    titleWin->color(BORDER_COLOR_PAIR, true);
+    titleWin->draw();
 }
 
 // draw the control panel
@@ -438,6 +425,9 @@ void Draw::stop()
     delwin(titleWindow);
     delwin(taskWindowBorder);
     delwin(inputWindowBorder);
+    
+    delete titleWin;
+    
     endwin();
 
     curs_set(1);
