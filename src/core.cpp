@@ -52,7 +52,16 @@ bool Core::handleInput(int c, TodoList *todoList, unsigned &position)
                 todoList->add(Task(newTask));
             }
             break;
-        
+       
+        case EDIT_KEY:
+            {
+            string base = todoList->at(position).raw();
+            string editTask = Draw::getInput(base);
+            if (!editTask.empty())
+                todoList->at(position) = Task(editTask);
+            break;
+            }
+
         case REMOVE_KEY:
             todoList->remove(position);
             if (todoList->size() != 0){
