@@ -8,6 +8,7 @@
 #include "config.hpp"
 #include "task.hpp"
 #include "todolist.hpp"
+#include "typer.hpp"
 #include "win.hpp"
 
 using std::string;
@@ -122,20 +123,7 @@ void Draw::mouse(MEVENT event, TodoList *list,
 // get an input string for a new task
 string Draw::getInput()
 {
-    inputWin->color(BORDER_COLOR_PAIR, true);
-    inputWin->draw();
-    
-    curs_set(1);
-    echo();
-
-    char tmp[charBufferSize];
-    mvwgetnstr(inputWin->getWin(), 0, 0, tmp, charBufferSize);
-    inputWin->clear();
-    
-    curs_set(0);
-    noecho();
-
-    return std::string(tmp);
+    return type(inputWin, 128);
 }
 
 ////////////////////
