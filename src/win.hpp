@@ -40,6 +40,8 @@ public:
     void colorOff(int pair, bool border = 0);
 
     bool mouse(int &x, int &y);
+
+    WINDOW* getWin();
 };
 
 #endif

@@ -128,3 +128,10 @@ bool Win::mouse(int &x, int &y)
 {
    return wmouse_trafo(win, &y, &x, false); 
 }
+
+///////////////////////
+// get WINDOW pointer
+WINDOW* Win::getWin()
+{
+    return win;
+}

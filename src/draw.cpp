@@ -16,32 +16,19 @@ using std::stringstream;
 // ===================|
 // internal functions |
 // ===================|
-void drawText(string text, int x, int y);
-
-WINDOW* createWindow(int startX, int startY, int width, int height);
-void setCurrentWindow(WINDOW *curWin);
-
 std::string buildTitle(TodoList *list);
 
 void drawTitle(TodoList* list);
 void drawControls();
 void drawTasks(TodoList* list, unsigned selected);
 
-void inverseOn();
-void inverseOff();
-void colorOn(int pair);
-void colorOff(int pair);
-
 // ===================|
 // internal variables |
 // ===================|
-WINDOW *inputWindow;
-WINDOW *inputWindowBorder;
-WINDOW *currentWindow;
-
 Win *titleWin;
 Win *taskWin;
 Win *controlWin;
+Win* inputWin;
 
 int startX;
 int startY;
@@ -94,25 +81,19 @@ void Draw::init()
 
     int inHeight = inputHeight * LINES;
     inHeight = std::max(inHeight, 4);
-    inputWindowBorder = createWindow(inputStartX, inputStartY,
-                                     COLS - inputStartX - 2, inHeight);
-    inputWindow = createWindow(inputStartX + 1, inputStartY + 1, 
-                               COLS - inputStartX - 4, inHeight - 2);
-
 
     titleWin = new Win(0, 0, COLS, titleHeight, "title", false);
     taskWin = new Win(startX, startY, width, height, "tasks");
     controlWin = new Win(inputStartX, inputStartY, COLS - inputStartX - 2, 
                          inHeight, "controls");
+    inputWin = new Win(inputStartX, inputStartY, COLS - inputStartX - 2, 
+                         inHeight, "new task");
 }
 
 //////////////////////
 // main draw function
 void Draw::draw(TodoList *list, unsigned selected)
 {
-    werase(inputWindow);
-    werase(inputWindowBorder);
-
     drawTitle(list);
     drawControls();
     drawTasks(list, selected);
@@ -141,33 +122,16 @@ void Draw::mouse(MEVENT event, TodoList *list,
 // get an input string for a new task
 string Draw::getInput()
 {
+    inputWin->color(BORDER_COLOR_PAIR, true);
+    inputWin->draw();
     echo();
 
-    setCurrentWindow(inputWindowBorder);
-    if (colors){
-        colorOn(BORDER_COLOR_PAIR);
-    }
-    box(inputWindowBorder, 0, 0);
-    
-    inverseOn();
-    drawText("[New task]", 0, 0);
-    inverseOff();
-
-    if (colors){
-        colorOff(BORDER_COLOR_PAIR);
-    }
-
-    setCurrentWindow(inputWindow);
-    wrefresh(inputWindowBorder);
-    wrefresh(inputWindow);
     curs_set(1);
 
     char tmp[charBufferSize];
-    mvwgetnstr(inputWindow, 0, 0, tmp, charBufferSize);
+    mvwgetnstr(inputWin->getWin(), 0, 0, tmp, charBufferSize);
 
-    box(inputWindowBorder, ' ', ' ');
-    werase(inputWindow);
-    werase(inputWindowBorder);
+    inputWin->clear();
     curs_set(0);
     noecho();
 
@@ -326,60 +290,14 @@ void drawTasks(TodoList* list, unsigned selected)
     taskWin->draw();
 }
 
-// draw text to the current window
-void drawText(std::string text, int x, int y)
-{
-    mvwprintw(currentWindow, y, x, text.c_str());
-}
-
-// create a new window
-WINDOW* createWindow(int startX, int startY, int width, int height)
-{
-    WINDOW *win;
-    win = newwin(height, width, startY, startX);
-    return win;
-}
-
-// set the current window
-void setCurrentWindow(WINDOW* curWin)
-{
-    currentWindow = curWin;
-}
-
-// draw text in inverse
-void inverseOn()
-{
-    wattron(currentWindow, A_STANDOUT);
-}
-
-// draw text normally
-void inverseOff()
-{
-    wattroff(currentWindow, A_STANDOUT);
-}
-
-// turn on a color pair
-void colorOn(int pair)
-{
-    wattron(currentWindow, COLOR_PAIR(pair));
-}
-
-// turn off a color pair
-void colorOff(int pair)
-{
-    wattroff(currentWindow, COLOR_PAIR(pair));
-}
-
 ///////////////////////////////////
 // stop curses and delete windows
 void Draw::stop()
 {
-    delwin(inputWindow);
-    delwin(inputWindowBorder);
-    
     delete titleWin;
     delete taskWin;
     delete controlWin;
+    delete inputWin;
 
     endwin();
 
