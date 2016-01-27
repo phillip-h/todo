@@ -40,34 +40,24 @@ void Win::setColors(bool colors)
     Win::colors = colors;
 }
 
-///////////////////
-// box the window
-void Win::box()
-{
-    ::box(border, 0, 0);
-    inverse(true);
-    mvwprintw(border, 0, 0, string("[" + name + "]").c_str());
-    inverseOff(true);
-}
-
 ////////////////////
 // clear the window
-void Win::clear(bool border_)
+void Win::clear()
 {
-    if (border_)
-        werase(border);
-    else
-        werase(win);
+    werase(border);
+    werase(win);
 }
 
 ///////////////////////////////////
 // draw the current window buffer
-void Win::draw(bool border_)
+void Win::draw()
 {
-    if (border_)
-        wrefresh(border);
-    else
-        wrefresh(win);    
+    box(border, 0, 0);
+    inverse(true);
+    mvwprintw(border, 0, 0, string("[" + name + "]").c_str());
+    inverseOff(true);
+    wrefresh(border);
+    wrefresh(win);    
 }
 
 /////////////////////////////////////////

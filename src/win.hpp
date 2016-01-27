@@ -26,9 +26,8 @@ public:
 
     static void setColors(bool colors);
 
-    void box();
-    void clear(bool border = false);
-    void draw(bool border = false);
+    void clear();
+    void draw();
 
     void move(unsigned x, unsigned y);
 
