@@ -24,7 +24,12 @@ The up and down arrow keys can be used to navigate through the list.
 Use the space key to start creating a new task. Once the space key
 has been pressed, a input window will appear, enter your text and
 press return to finish. Hitting return without entering text
-will cancle adding a new task.
+will cancel adding a new task, as will the escape key.
+
+A Task can be edited by selecting it and hitting "E". This will display
+the input box with the current task text prefilled. You can then modify it
+as you see fit, and save it with the return key. If the escape key is
+hit or you save an empty task, the task will not be edited.
 
 The return key will toggle task completion, and the "D" key will
 remove the selected task from the list.
