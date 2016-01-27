@@ -19,6 +19,7 @@ public:
     void toggleComplete();
     bool completed() const;
     std::string task();
+    std::string raw();
 
     std::string save();
     Task parse();

@@ -70,6 +70,13 @@ Task Task::parse()
     return *this;
 }
 
+////////////////////////////
+// get the raw task string
+string Task::raw()
+{
+    return name;
+}
+
 ////////////////////////////////
 // return if the task has been 
 // completed or not
