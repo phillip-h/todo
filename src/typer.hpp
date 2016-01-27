@@ -5,6 +5,6 @@
 
 #include "win.hpp"
 
-std::string type(Win *win, unsigned size, std::string base = "");
+std::string type(Win *win, unsigned size, std::string base);
 
 #endif
