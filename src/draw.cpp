@@ -121,9 +121,9 @@ void Draw::mouse(MEVENT event, TodoList *list,
 
 ///////////////////////////////////////
 // get an input string for a new task
-string Draw::getInput()
+string Draw::getInput(string str)
 {
-    return type(inputWin, 128);
+    return type(inputWin, 128, str);
 }
 
 ////////////////////
