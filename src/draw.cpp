@@ -124,14 +124,14 @@ string Draw::getInput()
 {
     inputWin->color(BORDER_COLOR_PAIR, true);
     inputWin->draw();
-    echo();
-
+    
     curs_set(1);
+    echo();
 
     char tmp[charBufferSize];
     mvwgetnstr(inputWin->getWin(), 0, 0, tmp, charBufferSize);
-
     inputWin->clear();
+    
     curs_set(0);
     noecho();
 
@@ -156,32 +156,18 @@ void drawTitle(TodoList* list)
 void drawControls()
 {
     controlWin->clear();
-    controlWin->move(0, 0);
-
     stringstream line;
     
+    controlWin->move(0, 0);
     line << "[" << ((char) EXIT_KEY) << "] quit          ";
-    controlWin->print(line.str());
-    line.str("");
-
     line << "[Space] new task          ";
-    controlWin->print(line.str());
-    line.str("");
-
     line << "[" << ((char) MOVE_UP_KEY) << "] move task up  ";
     controlWin->print(line.str());
     line.str("");
 
     controlWin->move(0, 1);
-
     line << "[" << ((char) REMOVE_KEY) << "] delete task   ";
-    controlWin->print(line.str());
-    line.str("");
-
     line << "[Return] mark task done   ";
-    controlWin->print(line.str());
-    line.str("");
-
     line << "[" << ((char) MOVE_DOWN_KEY) << "] move task down  ";
     controlWin->print(line.str());
     line.str("");
@@ -196,24 +182,21 @@ void drawTasks(TodoList* list, unsigned selected)
     
     taskWin->clear();    
 
-    if (tasks && tasks->size() != 0){
+    if (tasks && tasks->size()){
         xpos = 1;
         ypos = 1;
 
         unsigned numTasks = height - 2;
         endTask = tasks->size();
-        if (endTask > numTasks){
+        if (endTask > numTasks)
             endTask = numTasks;
-        }
         
         if (numTasks <= tasks->size()){
-            while (selected > endTask + listOff - 2 && selected != 0){
+            while (selected > endTask + listOff - 2 && selected != 0)
                 listOff++;
-            }
             while (selected < startTask + listOff && 
-                   selected != list->size() - 1){
+                   selected != list->size() - 1)
                 listOff--;
-            }
         } else{
             listOff = 0;
         }
