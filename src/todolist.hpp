@@ -17,6 +17,7 @@ public:
     static std::string getSaveDir();
 
     TodoList(std::string name);
+    TodoList(TodoList *base);
     ~TodoList();
 
     bool exists();

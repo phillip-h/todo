@@ -79,6 +79,7 @@ const int MOVE_UP_KEY = 'k';
 const int MOVE_DOWN_KEY = 'j';
 const int SORT_KEY = 's';
 const int EDIT_KEY = 'e';
+const int UNDO_KEY = 'u';
 
 // settings related to saving
 const std::string saveDirectory = ".todo";

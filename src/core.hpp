@@ -11,8 +11,9 @@ namespace Core
 {
 
 void init();
+void stop();
 
-bool handleInput(int c, TodoList* todoList, unsigned &position);
+bool handleInput(int c, TodoList *&todoList, unsigned &position);
 
 TodoList* list(std::string name);
 

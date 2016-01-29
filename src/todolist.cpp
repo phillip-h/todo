@@ -1,6 +1,7 @@
 #include "todolist.hpp"
 
 #include <algorithm>
+#include <iostream>
 #include <fstream>
 #include <sys/stat.h>
 
@@ -16,6 +17,12 @@ TodoList::TodoList(string name)
     taskList = new vector<Task>();
 }
 
+TodoList::TodoList(TodoList *base)
+{
+    this->name = base->name;
+    taskList = new vector<Task>(*base->taskList);
+}
+
 TodoList::~TodoList()
 {
     delete taskList;
@@ -27,7 +34,12 @@ void TodoList::save()
 {
     mkdir(getSaveDir().c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
     std::ofstream file(getPath());
-    
+
+    if (!file.good()){
+        std::cout << "failed to write to-do list!\n";
+        return;
+    }
+
     for (unsigned i = 0; i < size(); i++){
         file << at(i).save() << "\n";
     }

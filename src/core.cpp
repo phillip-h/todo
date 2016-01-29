@@ -9,14 +9,49 @@
 
 using std::string;
 
-///////////////////////////////////
-// initiate things like the mouse
-// listener
+// ===================|
+// internal variables |
+// ===================|
+TodoList *backup_;
+
+// ===================|
+// internal functions |
+// ===================|
+
+
+///////////////////
+// backup todolist
+void backup(TodoList *list)
+{
+    delete backup_;
+    backup_ = new TodoList(list);
+}
+
+////////////////////////////////
+// restore todo list from backup
+void restore(TodoList *&list)
+{
+    if (!backup_)
+        return;
+    delete list;
+    list = new TodoList(backup_);
+}
+
+//////////////////////////////////////////////
+// initiate things such as the mouse listener
 void Core::init()
 {
     if (USE_MOUSE){
         mousemask(ALL_MOUSE_EVENTS, NULL);
     }
+    backup_ = nullptr;
+}
+
+///////////////////////////////////////////
+// cleanup everything and prepare to exit
+void Core::stop()
+{
+    delete backup_;
 }
 
 //////////////////////////////////
@@ -32,7 +67,7 @@ TodoList* Core::list(string name)
 // intercept keyboard input and act on it
 // returns true if the program should exit
 // and false if it should continue
-bool Core::handleInput(int c, TodoList *todoList, unsigned &position)
+bool Core::handleInput(int c, TodoList *&todoList, unsigned &position)
 {
     std::string newTask;
     
@@ -47,6 +82,7 @@ bool Core::handleInput(int c, TodoList *todoList, unsigned &position)
             break;
         
         case NEW_KEY:
+            backup(todoList);
             newTask = Draw::getInput();
             if (!newTask.empty()){
                 todoList->add(Task(newTask));
@@ -55,6 +91,7 @@ bool Core::handleInput(int c, TodoList *todoList, unsigned &position)
        
         case EDIT_KEY:
             {
+            backup(todoList);
             string base = todoList->at(position).raw();
             string editTask = Draw::getInput(base);
             if (!editTask.empty())
@@ -63,12 +100,17 @@ bool Core::handleInput(int c, TodoList *todoList, unsigned &position)
             }
 
         case REMOVE_KEY:
+            backup(todoList);
             todoList->remove(position);
             if (todoList->size() != 0){
                 if (position >= todoList->size()){
                     position = todoList->size() - 1;
                 }
             }
+            break;
+
+        case UNDO_KEY:
+            restore(todoList); 
             break;
 
         case MOVE_UP_KEY:
@@ -105,6 +147,7 @@ bool Core::handleInput(int c, TodoList *todoList, unsigned &position)
 	        break;
 
         case SORT_KEY:
+            backup(todoList);
             todoList->sort();
             if (autoSave){
                 todoList->save();

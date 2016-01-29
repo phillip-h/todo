@@ -26,6 +26,7 @@ int main(int argv, char **argc)
     }
 
     Draw::stop();
+    Core::stop();
 
     todoList->save();
     delete todoList;
