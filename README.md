@@ -34,6 +34,14 @@ hit or you save an empty task, the task will not be edited.
 The return key will toggle task completion, and the "D" key will
 remove the selected task from the list.
 
+The "S" key will sort the list, first by completedness 
+then lexicographically. 
+
+Certain actions can be undone through the "U" key. Please note that this
+is intended to recover from mistakes, not create a comprehensive history
+of edits. Only one level of history is kept. Events that support undo are
+deleting a task, editing a task, adding a task, and sorting the list.
+
 The "K" and "J" keys will move the selected task up and down in the
 list, respectivly.
 
@@ -45,9 +53,6 @@ cursor, and right click will toggle the task under the cursor. The
 mouse wheel can be used to scroll up and down in the list. Note that
 mouse scrolling, particulary down scrolling, is a bit finicky and may
 not work with your terminal.
-
-!! Experimental - pressing 'S' will sort the todo list by name and
-alphabetical order. There is not currently a way to undo the sort 
 
 Todo lists are saved to `~/.todo`. By default, the list will be saved
 any time it is edited. If you wish to disable this for some reason,
