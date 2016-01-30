@@ -18,24 +18,8 @@ TodoList *backup_;
 // internal functions |
 // ===================|
 
-
-///////////////////
-// backup todolist
-void backup(TodoList *list)
-{
-    delete backup_;
-    backup_ = new TodoList(list);
-}
-
-////////////////////////////////
-// restore todo list from backup
-void restore(TodoList *&list)
-{
-    if (!backup_)
-        return;
-    delete list;
-    list = new TodoList(backup_);
-}
+void backup(TodoList *list);
+void restore(TodoList *&list);
 
 //////////////////////////////////////////////
 // initiate things such as the mouse listener
@@ -181,4 +165,22 @@ bool Core::handleInput(int c, TodoList *&todoList, unsigned &position)
     }
     
     return false;
+}
+
+///////////////////
+// backup todolist
+void backup(TodoList *list)
+{
+    delete backup_;
+    backup_ = new TodoList(list);
+}
+
+////////////////////////////////
+// restore todo list from backup
+void restore(TodoList *&list)
+{
+    if (!backup_)
+        return;
+    delete list;
+    list = new TodoList(backup_);
 }
