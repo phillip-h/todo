@@ -13,8 +13,4 @@ const std::string ANSI_PURPLE = "\u001B[1;35m";
 const std::string ANSI_CYAN = "\u001B[1;36m";
 const std::string ANSI_WHITE = "\u001B[1;37m";
 
-const std::string ANSI_LEFT = "\u001B[1C";
-const std::string ANSI_RIGHT = "\u001B[1D";
-const std::string ANSI_CLEAR_LINE = "\u001B[K";
-
 #endif
