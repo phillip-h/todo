@@ -10,8 +10,8 @@ clean:
 	@$(RM) todo
 
 install:
-	sudo mv todo $(DESTDIR)/usr/bin/todo
-	sudo cp completion/todoc $(DESTDIR)/usr/share/bash-completion/completions/todo
+	install -D todo $(DESTDIR)/usr/bin/todo
+	install -D completion/todoc $(DESTDIR)/usr/share/bash-completion/completions/todo
 
 remove:
 	sudo rm $(DESTDIR)/usr/bin/todo
