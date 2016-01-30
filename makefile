@@ -9,8 +9,8 @@ clean:
 
 install:
 	sudo mv todo /usr/bin/todo
-	sudo cp completion/todoc /etc/bash_completion.d/todo
+	sudo cp completion/todoc /usr/share/bash-completion/completions/todo
 
 remove:
 	sudo rm /usr/bin/todo
-	sudo rm /etc/bash_completion.d/todo
+	sudo rm /usr/share/bash-completion/completions/todo
