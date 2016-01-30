@@ -1,3 +1,5 @@
+DESTDIR = ""
+
 all:
 	cd src; $(MAKE)
 
@@ -8,9 +10,9 @@ clean:
 	@$(RM) todo
 
 install:
-	sudo mv todo /usr/bin/todo
-	sudo cp completion/todoc /usr/share/bash-completion/completions/todo
+	sudo mv todo $(DESTDIR)/usr/bin/todo
+	sudo cp completion/todoc $(DESTDIR)/usr/share/bash-completion/completions/todo
 
 remove:
-	sudo rm /usr/bin/todo
-	sudo rm /usr/share/bash-completion/completions/todo
+	sudo rm $(DESTDIR)/usr/bin/todo
+	sudo rm $(DESTDIR)/usr/share/bash-completion/completions/todo
