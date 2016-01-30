@@ -5,7 +5,7 @@
 #include <string>
 
 // version number
-const std::string vn = "0.8_dev";
+const std::string vn = "0.9";
 
 // the default name of a todo list, used if one isn't provided at runtime
 const std::string DEFAULT_NAME = "todo";
