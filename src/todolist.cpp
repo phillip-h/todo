@@ -61,8 +61,8 @@ void TodoList::load()
         std::cout << "failed to write to-do list!\n";
         return;
     }
-    
-    while(std::getline(file, line)){
+
+    for (string line = ""; getline(file, line);){
         add(Task(line).parse());
     }
 }
