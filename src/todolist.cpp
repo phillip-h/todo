@@ -57,7 +57,10 @@ void TodoList::load()
     }
 
     std::ifstream file(getPath());
-    string line;
+    if (!file.good()){
+        std::cout << "failed to write to-do list!\n";
+        return;
+    }
     
     while(std::getline(file, line)){
         add(Task(line).parse());
