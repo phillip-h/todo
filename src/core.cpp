@@ -117,7 +117,11 @@ bool Core::handleInput(int c, TodoList *&todoList, unsigned &position)
 
         case DIV_KEY:
             backup(todoList);
-            newTask = ((char) 0x07) + ("[" + Draw::getInput() + "]");
+            newTask = Draw::getInput();
+            if (!newTask.empty()){
+                newTask ="[" + newTask + "]";
+            }
+            newTask = (char) 0x07 + newTask;
             todoList->add(Task(newTask), position);
             break;
 
