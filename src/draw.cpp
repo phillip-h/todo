@@ -22,6 +22,7 @@ std::string buildTitle(TodoList *list);
 void drawTitle(TodoList* list);
 void drawControls();
 void drawTasks(TodoList* list, unsigned selected);
+void drawDivider(string div, int ypos);
 
 // ===================|
 // internal variables |
@@ -189,6 +190,8 @@ void drawTasks(TodoList* list, unsigned selected)
             listOff = 0;
         }
 
+        unsigned count = startTask + listOff;
+
         for (unsigned i = startTask + listOff; i < endTask + listOff; i++){
             Task t = tasks->at(i);
             
@@ -196,10 +199,10 @@ void drawTasks(TodoList* list, unsigned selected)
                 taskWin->inverse();
                 taskWin->color(GUTTER_COLOR_PAIR);
                 
-                std::string number = std::to_string(i);
+                std::string number = std::to_string(count);
                 if (!zeroIndexNumbers)
-                    number = std::to_string(i + 1);
-                if (number.size() < 2)
+                    number = std::to_string(count + 1);
+                while (number.size() < 2)
                     number = "0"+number;
                 
                 taskWin->print(number + ")", xpos, ypos);
@@ -207,9 +210,21 @@ void drawTasks(TodoList* list, unsigned selected)
                 taskWin->inverseOff();
                 xpos += 5;
             }
-            
+           
             if (i == selected){
                 std::string tmp = tasks->at(i).task();
+                if (tmp.at(4) == 0x07){
+                    taskWin->inverse();
+                    taskWin->color(SELECT_COLOR_PAIR);
+                    drawDivider(tmp.substr(5, tmp.size() - 5), ypos);
+                    taskWin->colorOff(SELECT_COLOR_PAIR);
+                    taskWin->inverseOff();
+                    ypos+=2;
+                    if (showNumbers){
+                        xpos -= 5;
+                    }
+                    continue;
+                }
                 std::string line = tmp;
                 if (highlightWholeLine){
                     for (int k = tmp.size() + xpos; k < width - 2; k++){
@@ -235,6 +250,15 @@ void drawTasks(TodoList* list, unsigned selected)
                 taskWin->inverseOff();
             } else{
                 std::string tmp = tasks->at(i).task();
+                if (tmp.at(4) == 0x07){
+                    drawDivider(tmp.substr(5, tmp.size() - 5), ypos);
+                    ypos+= 2;
+                    if (showNumbers){
+                        xpos -= 5;
+                    }
+                    continue;
+                }
+                
                 std::string text = tmp;
                 std::string mark = text.substr(0, STRING_COMPLETE.size());
                 text = text.substr(mark.size());
@@ -253,6 +277,7 @@ void drawTasks(TodoList* list, unsigned selected)
             }
             if (showNumbers){
                 xpos -= 5;
+                count++;
             }
         }
     }
@@ -290,18 +315,7 @@ std::string buildTitle(TodoList *list)
     title += list->name;
     title += "]";
 
-    std::string stats = "[";
-    stats += std::to_string(list->completed());
-    stats += "/";
-    stats += std::to_string(list->size());
-    stats += " -> ";
-    if (list->size() == 0){
-        stats += "NaN";
-    } else{
-        stats += std::to_string((int) ((float) list->completed() / (float) list->size() * 100));
-        stats += "%";
-    } 
-    stats += "]";
+    std::string stats = "[" + list->completedStr() + "]";
 
     for (unsigned i = title.size() + stats.size(); i < (unsigned)COLS; i++){
         title += division;
@@ -310,3 +324,12 @@ std::string buildTitle(TodoList *list)
     title += stats;
     return title;
 }
+            
+void drawDivider(string div, int ypos)
+{
+    while ((int) div.size() < width - 3){
+        div += "-";
+    }
+    taskWin->print(div, 1, ypos);
+}
+

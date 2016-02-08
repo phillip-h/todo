@@ -28,7 +28,9 @@ public:
     
     unsigned size();
     unsigned completed();
-    
+
+    std::string completedStr();
+
     Task& at(int position);
     
     void add(Task task);

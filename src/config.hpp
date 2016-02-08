@@ -80,6 +80,7 @@ const int MOVE_DOWN_KEY = 'j';
 const int SORT_KEY = 's';
 const int EDIT_KEY = 'e';
 const int UNDO_KEY = 'u';
+const int DIV_KEY = 'z';
 
 // settings related to saving
 const std::string saveDirectory = ".todo";

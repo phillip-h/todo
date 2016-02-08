@@ -115,6 +115,35 @@ unsigned TodoList::completed()
     return count;
 }
 
+////////////////////////////////////////////////////////
+// create a string for the number and percent of tasks 
+// completed, not counting dividers
+string TodoList::completedStr()
+{
+    unsigned count = 0;
+    unsigned comp = 0;
+    for (unsigned i = 0; i < size(); i++){
+        if (at(i).task().at(4) == 0x07){
+            continue;
+        }
+        count++;
+        if (at(i).completed()){
+            comp++;
+        }
+    }
+
+    string info = std::to_string(comp) + "/" + std::to_string(count);
+    info += " -> ";
+    if (size() == 0){
+        info += " NaN";
+    } else {
+        info += std::to_string((int) ((float) comp / (float) count * 100));
+        info += "%";
+    }
+    
+    return info;
+}
+
 ////////////////////////////////////
 // add a new task to the todo list
 void TodoList::add(Task task)
@@ -165,7 +194,19 @@ string TodoList::getSaveDir()
 // sort the todo list
 void TodoList::sort()
 {
-    std::sort(taskList->begin(), taskList->end(), Task::cmp);
+
+    unsigned pos = 0;
+    for (unsigned i = 0; i < size(); i++){
+        if (taskList->at(i).task().at(4) == 0x07){
+            std::sort(taskList->begin() + pos, taskList->begin() + i,
+                      Task::cmp);
+            pos = i + 1;
+        } else if (i == size() - 1){
+            std::sort(taskList->begin() + pos, taskList->end(),
+                      Task::cmp);
+            pos = i + 1;
+        }
+    }
 }
 
 ///////////////////////////////////////////
