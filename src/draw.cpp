@@ -329,7 +329,7 @@ std::string buildTitle(TodoList *list)
 void drawDivider(string div, int ypos)
 {
     while ((int) div.size() < width - 3){
-        div += "-";
+        div += division;
     }
     taskWin->print(div, 1, ypos);
 }
