@@ -62,8 +62,9 @@ void TodoList::load()
         return;
     }
 
-    for (string line = ""; getline(file, line);){
-        add(Task(line).parse());
+    unsigned pos = 0;
+    for (string line = ""; getline(file, line); pos++){
+        add(Task(line).parse(), pos);
     }
 }
 
@@ -146,10 +147,10 @@ string TodoList::completedStr()
 
 ////////////////////////////////////
 // add a new task to the todo list
-void TodoList::add(Task task)
+void TodoList::add(Task task, unsigned position)
 {
-    taskList->push_back(task);
-    
+    taskList->insert(taskList->begin() + position, task);
+        
     if (autoSave){
         save();
     }

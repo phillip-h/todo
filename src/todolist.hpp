@@ -33,7 +33,7 @@ public:
 
     Task& at(int position);
     
-    void add(Task task);
+    void add(Task task, unsigned position);
     void remove(unsigned position);
 
     bool swap(unsigned pos);
