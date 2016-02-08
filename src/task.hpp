@@ -18,6 +18,7 @@ public:
 
     void toggleComplete();
     bool completed() const;
+    bool div();
     std::string task();
     std::string raw();
 

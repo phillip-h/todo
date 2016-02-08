@@ -77,6 +77,14 @@ string Task::raw()
     return name;
 }
 
+//////////////////////////////////////////
+// return true if the task is a divider,
+// and false if it is not
+bool Task::div()
+{
+    return raw().at(0) == DIV_CODE;
+}
+
 ////////////////////////////////
 // return if the task has been 
 // completed or not

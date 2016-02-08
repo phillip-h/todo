@@ -214,7 +214,7 @@ void drawTasks(TodoList* list, unsigned selected)
            
             if (i == selected){
                 std::string tmp = tasks->at(i).task();
-                if (tmp.at(4) == 0x07){
+                if (tasks->at(i).div()){
                     taskWin->inverse();
                     taskWin->color(SELECT_COLOR_PAIR);
                     drawDivider(tmp.substr(5, tmp.size() - 5), ypos);
@@ -251,7 +251,7 @@ void drawTasks(TodoList* list, unsigned selected)
                 taskWin->inverseOff();
             } else{
                 std::string tmp = tasks->at(i).task();
-                if (tmp.at(4) == 0x07){
+                if (tasks->at(i).div()){
                     drawDivider(tmp.substr(5, tmp.size() - 5), ypos);
                     ypos+= 2;
                     if (showNumbers){

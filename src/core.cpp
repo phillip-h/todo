@@ -121,7 +121,7 @@ bool Core::handleInput(int c, TodoList *&todoList, unsigned &position)
             if (!newTask.empty()){
                 newTask ="[" + newTask + "]";
             }
-            newTask = (char) 0x07 + newTask;
+            newTask = DIV_CODE + newTask;
             todoList->add(Task(newTask), position);
             break;
 

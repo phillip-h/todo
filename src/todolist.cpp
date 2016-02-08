@@ -75,7 +75,7 @@ unsigned TodoList::adjustPos(unsigned &pos, unsigned start)
 {
     unsigned ad = 0;
     for (unsigned i = start; i < pos; i++){
-        if (at(i).raw().at(0) == DIV_CODE){
+        if (at(i).div()){
             ad++;
         }
     }
@@ -140,7 +140,7 @@ string TodoList::completedStr()
     unsigned count = 0;
     unsigned comp = 0;
     for (unsigned i = 0; i < size(); i++){
-        if (at(i).task().at(4) == 0x07){
+        if (at(i).div()){
             continue;
         }
         count++;
@@ -214,7 +214,7 @@ void TodoList::sort()
 
     unsigned pos = 0;
     for (unsigned i = 0; i < size(); i++){
-        if (taskList->at(i).task().at(4) == 0x07){
+        if (taskList->at(i).div()){
             std::sort(taskList->begin() + pos, taskList->begin() + i,
                       Task::cmp);
             pos = i + 1;
