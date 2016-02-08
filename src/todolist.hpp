@@ -6,7 +6,7 @@
 
 class Task;
 
-// representation of a todo list
+// representation of a to-do list
 class TodoList{
 private:
      std::vector<Task> *taskList;

@@ -7,7 +7,7 @@
 // version number
 const std::string vn = "1.0";
 
-// the default name of a todo list, used if one isn't provided at runtime
+// the default name of a to-do list, used if one isn't provided at runtime
 const std::string DEFAULT_NAME = "todo";
 
 // exit codes
@@ -42,7 +42,7 @@ const int MARK_FOREGROUND_DONE = COLOR_GREEN;
 const int MARK_BACKGROUND_DONE = -1;
 const int MARK_COLOR_PAIR_DONE = 6;
 
-// various settings for how the todo list is displayed
+// various settings for how the to-do list is displayed
 const bool showNumbers = true;
 const bool zeroIndexNumbers = true;
 const bool highlightWholeLine = true;

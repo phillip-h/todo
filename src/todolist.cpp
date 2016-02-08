@@ -29,7 +29,7 @@ TodoList::~TodoList()
 }
 
 //////////////////////////////////
-// write the todo list to a file
+// write the to-do list to a file
 void TodoList::save()
 {
     mkdir(getSaveDir().c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
@@ -48,7 +48,7 @@ void TodoList::save()
 }
 
 ///////////////////////////////////
-// try to read the todo list from
+// try to read the to-do list from
 // a file
 void TodoList::load()
 {
@@ -85,7 +85,7 @@ unsigned TodoList::adjustPos(unsigned &pos, unsigned start)
 }
 
 ////////////////////////////////////////
-// return true if the todo list exists
+// return true if the to-do list exists
 // on the disk
 bool TodoList::exists()
 {
@@ -111,7 +111,7 @@ Task& TodoList::at(int position)
 
 //////////////////////////////////
 // return the number of tasks in 
-// the todo list
+// the to-do list
 unsigned TodoList::size()
 {
     return taskList->size();
@@ -119,7 +119,7 @@ unsigned TodoList::size()
 
 ///////////////////////////////////
 // return the number of completed
-// tasks in the todo list
+// tasks in the to-do list
 unsigned TodoList::completed()
 {
     unsigned count = 0;
@@ -162,7 +162,7 @@ string TodoList::completedStr()
 }
 
 ////////////////////////////////////
-// add a new task to the todo list
+// add a new task to the to-do list
 void TodoList::add(Task task, unsigned position)
 {
     taskList->insert(taskList->begin() + position, task);
@@ -173,7 +173,7 @@ void TodoList::add(Task task, unsigned position)
 }
 
 /////////////////////////////////////
-// remove a task from the todo list
+// remove a task from the to-do list
 void TodoList::remove(unsigned position)
 {
     if (taskList->size() > position){
@@ -208,10 +208,9 @@ string TodoList::getSaveDir()
 }
 
 ///////////////////////////
-// sort the todo list
+// sort the to-do list
 void TodoList::sort()
 {
-
     unsigned pos = 0;
     for (unsigned i = 0; i < size(); i++){
         if (taskList->at(i).div()){
@@ -227,7 +226,7 @@ void TodoList::sort()
 }
 
 ///////////////////////////////////////////
-// return the save path for the todo list
+// return the save path for the to-do list
 string TodoList::getPath()
 {
     return string(getenv("HOME"))+"/"+saveDirectory+"/"+name+extension;

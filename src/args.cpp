@@ -187,12 +187,12 @@ vector<string> listFiles(string dir)
 }
 
 /////////////////////////
-// print all todo lists
+// print all to-do lists
 void printLists()
 {
     auto list = listFiles(TodoList::getSaveDir());
 
-    cout << ANSI_BLUE << "todo lists:\n" << ANSI_RESET;
+    cout << ANSI_BLUE << "to-do lists:\n" << ANSI_RESET;
     cout << "\n";
 
     unsigned count = 0;
@@ -211,19 +211,19 @@ void printLists()
 }
 
 /////////////////////////////////////
-// print the todo list to std::cout
+// print the to-do list to std::cout
 void printTodo()
 {
     TodoList* list = Core::list(name());
     if (!list->exists()){
-        cout << ANSI_RED << "Todo List '" << list->name;
+        cout << ANSI_RED << "To-do list '" << list->name;
         cout << "' does not exist!\n" << ANSI_RESET;
         return;
     }
 
     auto tasks = list->tasks();
 
-    cout << ANSI_BLUE << "todo -- " << list->name;
+    cout << ANSI_BLUE << "to-do -- " << list->name;
     cout << ANSI_RESET << "\n";
     for (unsigned i = 0; i < tasks->size(); i++){
         string taskStr = tasks->at(i).save();
@@ -248,12 +248,12 @@ void printUsage()
     cout << "-h, -help, --help   -> prints usage and exits\n";
     cout << "-version, --version -> prints version information and exits\n";
     cout << "\n";
-    cout << "-d, --delete    -> delete the todo list\n";
-    cout << "-l, --list      -> list all todo lists and exit\n";
+    cout << "-d, --delete    -> delete the to-do list\n";
+    cout << "-l, --list      -> list all to-do lists and exit\n";
     cout << "-nc, --no-color -> disable colored output\n";
-    cout << "-p, --print     -> print the todo list to the console";
+    cout << "-p, --print     -> print the to-do list to the console";
     cout << " and exit\n";
-    cout << "-r, --rename    -> rename the todo list\n";
+    cout << "-r, --rename    -> rename the to-do list\n";
     cout << "\n";
 }
 
@@ -267,7 +267,7 @@ void printVersion()
 }
 
 ////////////////////////////
-// remove a todo list file
+// remove a to-do list file
 void removeList()
 {
     TodoList *list = Core::list(name());
@@ -293,7 +293,7 @@ void removeList()
 }
 
 ///////////////////////
-// rename a todo list
+// rename a to-do list
 void renameList()
 {
     TodoList *list = Core::list(name());

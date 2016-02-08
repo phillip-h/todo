@@ -39,7 +39,7 @@ void Core::stop()
 }
 
 //////////////////////////////////
-// create and load the todo list
+// create and load the to-do list
 TodoList* Core::list(string name)
 {
     TodoList *list = new TodoList(name);
@@ -186,7 +186,7 @@ void backup(TodoList *list)
 }
 
 ////////////////////////////////
-// restore todo list from backup
+// restore to-do list from backup
 void restore(TodoList *&list)
 {
     if (!backup_)

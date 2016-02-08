@@ -3,7 +3,7 @@
 
 #include <string>
 
-// representation of a todo list item
+// representation of a to-do list item
 class Task
 {
 
