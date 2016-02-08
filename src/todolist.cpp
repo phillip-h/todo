@@ -68,6 +68,22 @@ void TodoList::load()
     }
 }
 
+/////////////////////////////////////////////////
+// adjust a position to account for extra space
+// created by dividers
+unsigned TodoList::adjustPos(unsigned &pos, unsigned start)
+{
+    unsigned ad = 0;
+    for (unsigned i = start; i < pos; i++){
+        if (at(i).raw().at(0) == DIV_CODE){
+            ad++;
+        }
+    }
+    
+    pos -= ad;
+    return pos;
+}
+
 ////////////////////////////////////////
 // return true if the todo list exists
 // on the disk

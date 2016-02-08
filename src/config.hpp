@@ -52,6 +52,9 @@ const std::string STRING_COMPLETE = "[x]";
 // string used as a divider in various places
 const std::string division = "=";
 
+// char used to designate a divider
+const char DIV_CODE = 0x07;
+
 // settings for the size and location of the various windows
 // the width of windows will be set using their startX to ensure
 // they are centered.
