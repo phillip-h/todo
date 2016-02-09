@@ -69,7 +69,10 @@ bool Core::handleInput(int c, TodoList *&todoList, unsigned &position)
             backup(todoList);
             newTask = Draw::getInput();
             if (!newTask.empty()){
-                todoList->add(Task(newTask), position + 1);
+                if (todoList->size() != 0){
+                    position++;
+                }
+                todoList->add(Task(newTask), position);
             }
             break;
        
@@ -122,7 +125,10 @@ bool Core::handleInput(int c, TodoList *&todoList, unsigned &position)
                 newTask ="[" + newTask + "]";
             }
             newTask = DIV_CODE + newTask;
-            todoList->add(Task(newTask), position + 1);
+            if (todoList->size() != 0){
+                position++;
+            }
+            todoList->add(Task(newTask), position);
             break;
 
         case UP_KEY:
