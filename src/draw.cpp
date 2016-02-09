@@ -110,8 +110,8 @@ void Draw::mouse(MEVENT event, TodoList *list,
     int y = event.y;
     if (taskWin->mouse(x, y)){
         unsigned pos = listOff + y - 1;
-        list->adjustPos(pos, listOff);
         if (pos < list->size()){
+            list->adjustPos(pos, listOff);
             if (!button){
                 selected = pos;
             } else{
