@@ -41,7 +41,8 @@ then lexicographically.
 A divider can be added to the to-do list with the "Z" key. The divider can 
 be given a name or left unnamed. Dividers are not counted in the completed
 percentage in the title bar. When sorting, tasks separated by dividers will
-be sorted independently. Dividers will never move after a sort.
+be sorted independently. Dividers will never move after a sort. Please note
+that dividers still have some quirks, mainly in regards to scrolling.
 
 Certain actions can be undone through the "U" key. Please note that this
 is intended to recover from mistakes, not create a comprehensive history
