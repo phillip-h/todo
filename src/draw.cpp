@@ -199,6 +199,13 @@ void drawTasks(TodoList* list, unsigned selected)
 
         unsigned count = startTask + listOff;
 
+        if (startTask + listOff != 0){
+            if (tasks->at(startTask + listOff - 1).div()){
+                ypos++;
+                endTask++;
+            }
+        }
+
         for (unsigned i = startTask + listOff; i < endTask + listOff &&
                                                i < tasks->size() ; i++){
             Task t = tasks->at(i);
