@@ -57,12 +57,12 @@ string Task::save()
 Task Task::parse()
 {
     for (unsigned i = 0; i < name.size() - 1; i++){
-        if (name.substr(i, 1) == ":"){
-            if (name.substr(i + 1, 1) == "1"){
+        if (name.substr(name.size() - i - 1, 1) == ":"){
+            if (name.substr(name.size() - i, 1) == "1"){
                 complete = true;
             }
             
-            name = name.substr(0, i);
+            name = name.substr(0, name.size() - i - 1);
             return *this;
         }
     }
