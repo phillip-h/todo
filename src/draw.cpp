@@ -183,8 +183,8 @@ void drawTasks(TodoList* list, unsigned selected)
 
         for (unsigned i = startTask + listOff; i < endTask + listOff &&
                                                  i < tasks->size(); i++){
-            if (tasks->at(i).div())
-                endTask--;
+            //if (tasks->at(i).div())
+                //endTask--;
         }
 
         if (numTasks <= tasks->size()){
