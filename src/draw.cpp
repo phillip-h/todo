@@ -181,16 +181,8 @@ void drawTasks(TodoList* list, unsigned selected)
         if (endTask > numTasks)
             endTask = numTasks;
 
-        unsigned divCount = 0;
-        for (unsigned i = startTask + listOff; i < endTask + listOff &&
-                                                 i < tasks->size(); i++){
-            if (tasks->at(i).div())
-                divCount++;
-        }
-
-
         if (numTasks < tasks->size()){
-            while (selected > (int) endTask + listOff - 2 - divCount && selected != 0)
+            while (selected > (int) endTask + listOff - 2 && selected != 0)
                 listOff++;
             while (selected < (int) startTask + listOff && 
                    selected != list->size() - 1)
@@ -200,13 +192,6 @@ void drawTasks(TodoList* list, unsigned selected)
         }
 
         unsigned count = startTask + listOff;
-
-        if (startTask + listOff != 0){
-            if (tasks->at(startTask + listOff - 1).div()){
-                ypos++;
-                endTask++;
-            }
-        }
 
         for (unsigned i = startTask + listOff; i < endTask + listOff &&
                                                i < tasks->size() ; i++){
@@ -236,7 +221,7 @@ void drawTasks(TodoList* list, unsigned selected)
                     drawDivider(tmp.substr(5, tmp.size() - 5), ypos);
                     taskWin->colorOff(SELECT_COLOR_PAIR);
                     taskWin->inverseOff();
-                    ypos+=2;
+                    ypos++;
                     if (showNumbers){
                         xpos -= 5;
                     }
@@ -274,7 +259,7 @@ void drawTasks(TodoList* list, unsigned selected)
                 std::string tmp = tasks->at(i).task();
                 if (tasks->at(i).div()){
                     drawDivider(tmp.substr(5, tmp.size() - 5), ypos);
-                    ypos+= 2;
+                    ypos++;
                     if (showNumbers){
                         xpos -= 5;
                     }
