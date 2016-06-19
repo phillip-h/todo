@@ -8,6 +8,8 @@ debug:
 
 clean:
 	@$(RM) todo
+	@$(RM) src/*.o
+	@$(RM) src/*.d
 
 install:
 	install -D todo $(DESTDIR)/usr/bin/todo
