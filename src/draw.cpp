@@ -339,6 +339,11 @@ std::string buildTitle(TodoList *list)
             
 void drawDivider(string div, int ypos)
 {
+    if (showNumbers) {
+        for (unsigned i = 0; i < 3; i++) {
+            div = "=" + div;
+        }
+    }
     while ((int) div.size() < width - 3){
         div += division;
     }
