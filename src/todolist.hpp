@@ -33,8 +33,6 @@ public:
 
     Task& at(int position);
    
-    unsigned adjustPos(unsigned &pos, unsigned start);
-
     void add(Task task, unsigned position);
     void remove(unsigned position);
 
