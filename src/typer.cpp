@@ -4,6 +4,7 @@
 #include "typer.hpp"
 
 #include <ncurses.h>
+#include <iostream>
 
 #include "config.hpp"
 
@@ -40,8 +41,6 @@ string type(Win *win, unsigned size, string base)
                 buf[pos] = 0;
                 break;
             default:
-                if (in > 127)
-                    break;
                 buf[pos] = in;
                 if (pos < size)
                     pos++;
