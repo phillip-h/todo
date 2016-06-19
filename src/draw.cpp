@@ -242,7 +242,12 @@ void drawTasks(TodoList* list, unsigned selected)
                     }
                     continue;
                 }
+
                 std::string line = tmp;
+                unsigned pad = showNumbers ? 8 : 5;
+                if (line.size() >= width - pad) {
+                    line = line.substr(0, width - pad - 3) + "...";
+                }
                 if (highlightWholeLine){
                     for (int k = tmp.size() + xpos; k < width - 2; k++){
                         line += " ";
@@ -277,6 +282,11 @@ void drawTasks(TodoList* list, unsigned selected)
                 }
                 
                 std::string text = tmp;
+                unsigned pad = showNumbers ? 8 : 5;
+                if (text.size() >= width - pad) {
+                    text = text.substr(0, width - pad - 3) + "...";
+                }
+
                 std::string mark = text.substr(0, STRING_COMPLETE.size());
                 text = text.substr(mark.size());
 
