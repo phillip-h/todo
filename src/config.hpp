@@ -59,7 +59,7 @@ const char DIV_CODE = 0x07;
 // the width of windows will be set using their startX to ensure
 // they are centered.
 const int listStartX = 2;
-const int listStartY = 6;
+const int listStartY = 7;
 const float listHeight = 0.75f;
 
 const int inputStartX = 2;

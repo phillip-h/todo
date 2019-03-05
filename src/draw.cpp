@@ -82,7 +82,7 @@ void Draw::init()
     height = LINES * listHeight;
 
     int inHeight = inputHeight * LINES;
-    inHeight = std::max(inHeight, 4);
+    inHeight = std::max(inHeight, 5);
 
     titleWin = new Win(0, 0, COLS, titleHeight, "title", false);
     taskWin = new Win(startX, startY, width, height, "tasks");
@@ -149,17 +149,25 @@ void drawControls()
     
     controlWin->move(0, 0);
     line << "[" << ((char) EXIT_KEY) << "] quit          ";
-    line << "[Space] new task          ";
-    line << "[" << ((char) MOVE_UP_KEY) << "] move task up  ";
+    line << "[Space] new task  ";
+    line << "[Return] mark task done   ";
+    line << "[Escape] cancel";
     controlWin->print(line.str());
     line.str("");
 
     controlWin->move(0, 1);
     line << "[" << ((char) REMOVE_KEY) << "] delete task   ";
-    line << "[Return] mark task done   ";
-    line << "[" << ((char) MOVE_DOWN_KEY) << "] move task down  ";
+    line << "[" << ((char) EDIT_KEY) << "] edit          ";
+    line << "[" << ((char) UNDO_KEY) << "] undo                  ";
+    line << "[" << ((char) DIV_KEY) << "] separate      ";
     controlWin->print(line.str());
     line.str("");
+
+    controlWin->move(0, 2);
+    line << "[" << ((char) SORT_KEY) << "] sort          ";
+    line << "[" << ((char) MOVE_UP_KEY) << "] move task up  ";
+    line << "[" << ((char) MOVE_DOWN_KEY) << "] move task down  ";
+    controlWin->print(line.str());
 
     controlWin->color(BORDER_COLOR_PAIR, true);
     controlWin->draw();

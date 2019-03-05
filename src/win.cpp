@@ -12,8 +12,8 @@ Win::Win(unsigned x, unsigned y, unsigned w, unsigned h,
 {
     this->x = x;
     this->y = y;
-    this->width = width;
-    this->height = height;
+    this->width = w;
+    this->height = h;
 
     this->name = name;
 
